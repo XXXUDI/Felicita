@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/wave2"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivities.SettingsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/settings_backImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/baseline_arrow_back_24"
+                android:layout_gravity="start" />
+
+            <TextView
+                android:id="@+id/settings_settingsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Настройки"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/settings_profileImage"
+        android:layout_marginTop="30dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/profile_logo"
+        />
+    <TextView
+        android:id="@+id/settings_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textColor="#242424"
+        android:textSize="23sp"
+        android:layout_marginTop="10dp" />
+    <TextView
+        android:id="@+id/settings_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+38 (093) 123-45-67"
+        android:textColor="#7D7D7D"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_changeProfile"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/purple"
+        android:text="Змінити профіль"
+        app:cornerRadius = "20dp"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1000dp"
+        android:background="@drawable/wave123"
+        >
+
+    </LinearLayout>
+</LinearLayout>

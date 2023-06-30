@@ -109,7 +109,7 @@ public class SignUp2Page extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(SignUp2Page.this, "Помилка: " + error.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -129,6 +129,11 @@ public class SignUp2Page extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do nothing
     }
 
     private void initialize() {

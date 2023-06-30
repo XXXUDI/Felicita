@@ -13,6 +13,9 @@
         android:theme="@style/Theme.FelicitaShop"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivities.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Auth.SignUp2Page"
             android:exported="false" />
         <activity
