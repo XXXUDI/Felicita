@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.socompany.felicitashop.Prevalent.Prevalent;
@@ -76,7 +79,6 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
     @Override
@@ -104,15 +106,38 @@ public class SettingsFragment extends Fragment {
 
     private void uploadImage(Uri imageUri) {
         if(imageUri != null) {
-            StorageReference fileRef = storageProfilePictureRef.child(Paper.book().read(Prevalent.userPhoneKey) + ".WebP");
+            StorageReference fileRef = storageProfilePictureRef.child(Paper.book().read(Prevalent.userPhoneKey));
             uploadTask = fileRef.putFile(imageUri);
             uploadTask.continueWithTask(new Continuation() {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
                     if(!task.isSuccessful()) {
-
+                        throw task.getException();
                     }
                     return fileRef.getDownloadUrl();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    if (e instanceof StorageException) {
+                        StorageException storageException = (StorageException) e;
+                        int errorCode = storageException.getErrorCode();
+                        Exception innerException = (Exception) storageException.getCause();
+
+                        // Log the error details for debugging purposes
+                        Log.e("UploadImage", "StorageException: " + e.getMessage());
+                        Log.e("UploadImage", "Error code: " + errorCode);
+                        if (innerException != null) {
+                            Log.e("UploadImage", "Inner exception: " + innerException.getMessage());
+                        }
+
+                        // Handle the error based on the specific details
+                        // You can display a toast or perform any other appropriate action
+                        Toast.makeText(getActivity(), "Upload failed. Error code: " + errorCode, Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Handle other types of exceptions
+                        Toast.makeText(getActivity(), "Unknown error occurred", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
@@ -178,7 +203,7 @@ public class SettingsFragment extends Fragment {
 
 
     private void initialize(View view) {
-        FirebaseStorage.getInstance().getReference().child("Profile Pictures");
+        storageProfilePictureRef = FirebaseStorage.getInstance().getReference().child("Profile Pictures");
         userImage = view.findViewById(R.id.settings_profileImage);
         userName = view.findViewById(R.id.settings_name);
         userPhone = view.findViewById(R.id.settings_number);
@@ -194,5 +219,6 @@ public class SettingsFragment extends Fragment {
         String imagePath = downloadsDirectory + "/" + fileName;
         imageUri = Uri.parse("file://" + imagePath);
         userImage.setImageURI(imageUri);
+        uploadImage(imageUri);
     }
 }
