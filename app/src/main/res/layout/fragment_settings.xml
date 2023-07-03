@@ -11,37 +11,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-<!--    <LinearLayout-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_width="400dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center">-->
-
-<!--        <FrameLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/settings_backImage"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:src="@drawable/baseline_arrow_back_24"-->
-<!--                android:layout_gravity="start" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/settings_settingsText"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Настройки"-->
-<!--                android:textSize="30sp"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_gravity="center" />-->
-
-<!--        </FrameLayout>-->
-
-<!--    </LinearLayout>-->
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/settings_profileImage"
         android:layout_marginTop="30dp"
@@ -94,6 +63,7 @@
             app:cardElevation="15dp">
 
             <FrameLayout
+                android:id="@+id/settings_write"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#495BAD">
@@ -133,6 +103,7 @@
             app:cardElevation="15dp"
             >
             <FrameLayout
+                android:id="@+id/settings_questions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#495BAD">
@@ -166,6 +137,7 @@
             app:cardElevation="15dp"
             >
             <FrameLayout
+                android:id="@+id/settings_rules"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#495BAD">
@@ -190,6 +162,13 @@
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
-
+        <ImageView
+            android:id="@+id/settings_adminPanel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_admin_panel_settings_24"
+            android:layout_gravity="right|bottom"
+            android:layout_marginTop="40dp"
+            />
     </LinearLayout>
 </LinearLayout>

@@ -34,10 +34,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     externalNativeBuild {
-        cmake {
-            path file('src/main/cpp/CMakeLists.txt')
-            version '3.22.1'
-        }
     }
 }
 
@@ -52,7 +48,10 @@ dependencies {
 
     implementation 'io.github.pilgr:paperdb:2.7.2'
     implementation 'com.google.firebase:firebase-database:20.2.2'
-    implementation 'de.hdodenhof:circleimageview:3.1.0' //last dependency
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation"com.theartofdev.edmodo:android-image-cropper:2.8.0"
+    implementation 'com.google.firebase:firebase-storage:20.1.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
