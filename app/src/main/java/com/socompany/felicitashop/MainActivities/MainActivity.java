@@ -17,10 +17,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.socompany.felicitashop.Auth.LoginActivity;
 import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.R;
+import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView userNameProfile;
     private TextView userEmailProfile;
     private DrawerLayout drawerLayout;
+
+    CircleImageView userImageProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userNameProfile = header.findViewById(R.id.userNameProfile);
         userEmailProfile = header.findViewById(R.id.userEmailProfile);
+        userImageProfile = header.findViewById(R.id.userImageProfile);
+
 
         displayUserData();
 
@@ -92,6 +103,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(userName != null) {
                 userNameProfile.setText(userName);
                 userEmailProfile.setText(userEmail);
+                try {
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users")
+                            .child(Paper.book().read(Prevalent.userPhoneKey));
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()) {
+                                if(snapshot.child("Image").exists()) {
+                                    String image = snapshot.child("Image").getValue().toString();
+                                    Picasso.get().load(image).into(userImageProfile);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }catch (Exception e) {
+                    // do nothing
+                }
             }
         }
     }

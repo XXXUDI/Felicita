@@ -75,8 +75,14 @@ public class SettingsFragment extends Fragment {
                 if(isCropAppAvailable()) {
                     CropImage.activity().start(getContext(), SettingsFragment.this);
                 } else {
-                    loadImageFromDownloads();
+                    Toast.makeText(getActivity(), "Помилка: no apps can perform this action", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        changeProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), EditProfileActivity.class));
             }
         });
         return view;
@@ -212,13 +218,5 @@ public class SettingsFragment extends Fragment {
         rules = view.findViewById(R.id.settings_rules);
         question = view.findViewById(R.id.settings_questions);
 
-    }
-    private void loadImageFromDownloads() {
-        String downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-        String fileName = "ok.jpg"; // Замените "your_image.jpg" на имя вашего файла
-        String imagePath = downloadsDirectory + "/" + fileName;
-        imageUri = Uri.parse("file://" + imagePath);
-        userImage.setImageURI(imageUri);
-        uploadImage(imageUri);
     }
 }
