@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/purple"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    tools:context=".MainActivities.Admin.Fragments.AdminAddFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - Felicita - "
+        android:textColor="@color/white"
+        android:textSize="54sp"
+        android:textStyle="bold|italic"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Виставте продукт на продаж"
+        android:textColor="@color/white"
+        android:textSize="24dp" />
+    <TextView
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:text="Для початку виберіть категорію товару"
+        />
+    <FrameLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/add_wine"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/wine" />
+        <ImageView
+            android:id="@+id/add_cheese"
+            android:layout_gravity="right|center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cheese" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/add_drinks"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/drinks" />
+        <ImageView
+            android:id="@+id/add_meat"
+            android:layout_gravity="right|center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/meat" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/add_seafood"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/seafood" />
+        <ImageView
+            android:id="@+id/add_sauces"
+            android:layout_gravity="right|center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/sauces" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/add_pasta"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/pasta" />
+        <ImageView
+            android:id="@+id/add_chemistry"
+            android:layout_gravity="right|center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cleaningproducts" />
+    </FrameLayout>
+    <TextView
+        android:id="@+id/add_category_text"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:text="Ви вибрали категорію: " />
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_nextButton"
+        android:textSize="18sp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#495BAD"
+        android:text="Добавити товар"
+        app:cornerRadius = "20dp"
+        />
+</LinearLayout>

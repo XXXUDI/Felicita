@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.socompany.felicitashop.MainActivities.Admin.AdminMainActivity;
 import com.socompany.felicitashop.R;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -24,8 +25,13 @@ public class EditProfileActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                onBackPressed();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

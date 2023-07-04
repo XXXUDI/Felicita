@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.socompany.felicitashop.MainActivities.Admin.AdminMainActivity;
 import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.R;
 import com.socompany.felicitashop.Tools.Parser;
@@ -51,6 +53,8 @@ import io.paperdb.Paper;
 public class SettingsFragment extends Fragment {
 
     private CircleImageView userImage;
+
+    private ImageView adminPanelLink;
     private TextView userName;
     private TextView userPhone;
     private Button changeProfileButton;
@@ -85,8 +89,23 @@ public class SettingsFragment extends Fragment {
                 startActivity(new Intent(getActivity(), EditProfileActivity.class));
             }
         });
+
+        adminPanelLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isUserAdmin((String) Paper.book().read(Prevalent.userPhoneKey))) {
+                    startActivity(new Intent(getActivity(), AdminMainActivity.class));
+                }
+            }
+        });
         return view;
     }
+
+    private boolean isUserAdmin(String read) {
+        //TODO you know what should be there
+        return true;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -217,6 +236,7 @@ public class SettingsFragment extends Fragment {
         writeUs = view.findViewById(R.id.settings_write);
         rules = view.findViewById(R.id.settings_rules);
         question = view.findViewById(R.id.settings_questions);
+        adminPanelLink = view.findViewById(R.id.settings_adminPanel);
 
     }
 }

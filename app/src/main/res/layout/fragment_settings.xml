@@ -58,7 +58,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="320dp"
             android:layout_height="50dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="80dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="15dp">
 
@@ -168,7 +168,8 @@
             android:layout_height="50dp"
             android:src="@drawable/baseline_admin_panel_settings_24"
             android:layout_gravity="right|bottom"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
             />
     </LinearLayout>
 </LinearLayout>
