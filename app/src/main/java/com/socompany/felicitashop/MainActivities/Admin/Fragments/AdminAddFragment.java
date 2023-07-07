@@ -20,7 +20,7 @@ public class AdminAddFragment extends Fragment {
 
     private String category;
     private TextView categoryDisplay;
-    private ImageView wine, cheese, pasta, drinks, seafood, meat, chemistry, sauces;
+    private ImageView sweets, cheese, pasta, coffee, seafood, meat, chemistry, sauces;
     private Button addButton;
 
 
@@ -51,10 +51,10 @@ public class AdminAddFragment extends Fragment {
     }
 
     private void setupListeners() {
-        wine.setOnClickListener(new View.OnClickListener() {
+        sweets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                category = "Вина";
+                category = "Солодощі";
                 displayCategory();
             }
         });
@@ -100,10 +100,10 @@ public class AdminAddFragment extends Fragment {
                 displayCategory();
             }
         });
-        drinks.setOnClickListener(new View.OnClickListener() {
+        coffee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                category = "Напитки";
+                category = "Кава";
                 displayCategory();
             }
         });
@@ -117,10 +117,10 @@ public class AdminAddFragment extends Fragment {
 
     private void initialize(View view) {
         categoryDisplay = view.findViewById(R.id.add_category_text);
-        wine = view.findViewById(R.id.add_wine);
+        sweets = view.findViewById(R.id.add_sweets);
         cheese = view.findViewById(R.id.add_cheese);
         pasta = view.findViewById(R.id.add_pasta);
-        drinks = view.findViewById(R.id.add_drinks);
+        coffee = view.findViewById(R.id.add_coffee);
         seafood = view.findViewById(R.id.add_seafood);
         meat = view.findViewById(R.id.add_meat);
         chemistry = view.findViewById(R.id.add_chemistry);

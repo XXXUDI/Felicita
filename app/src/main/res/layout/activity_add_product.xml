@@ -1,9 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".MainActivities.Admin.AddProductActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center|top"
+        android:background="@color/purple">
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Додайте інформацію про товар"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            android:text="1. Додайте фотографію" />
+        <ImageView
+            android:id="@+id/add2_product_image"
+            android:layout_marginTop="10dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/baseline_image_24"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:text="2. Введіть назву товару" />
+        <EditText
+            android:id="@+id/add2_pName"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Назва товару"
+            android:layout_centerInParent="true"
+            android:layout_margin="15dp"
+            android:background="@drawable/edit_background"
+            android:paddingLeft="12dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:text="3. Опишіть цей товар" />
+        <EditText
+            android:id="@+id/add2_pDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Опис товару (Хоча-б 3 речення)"
+            android:layout_centerInParent="true"
+            android:layout_margin="15dp"
+            android:background="@drawable/edit_background"
+            android:padding="12dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:text="3. Вкажіть ціну в гривнях" />
+        <EditText
+            android:id="@+id/add2_pPrice"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Ціна: 120"
+            android:layout_centerInParent="true"
+            android:layout_margin="15dp"
+            android:inputType="number"
+            android:background="@drawable/edit_background"
+            android:paddingLeft="12dp" />
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/add2_nextButton"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#495BAD"
+            android:text="Добавити товар"
+            app:cornerRadius = "20dp"
+            />
+    </LinearLayout>
+</ScrollView>
