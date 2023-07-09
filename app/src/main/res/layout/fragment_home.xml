@@ -6,117 +6,279 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="#F2F2F2"
     tools:context=".MainActivities.HomeFragment">
 
-    <RelativeLayout
-
+    <LinearLayout
         android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:background="@drawable/rectangle5"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center|top">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/home_search_panel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:orientation="vertical">
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingLeft="12dp"
+            android:drawableLeft="@drawable/baseline_search_24"
+            android:textColor="@color/black"
+            android:hint="Пошук"
+            android:background="@drawable/custom_search_text"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/alatsi"
-                android:text="Новинки"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
+        <TextView
+            android:id="@+id/home_recommendations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="Рекомендації"
+            android:textSize="19sp" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                app:cardElevation="20dp"
-                app:cardCornerRadius="20dp">
+        <TextView
+            android:id="@+id/home_recommendations_loremIpsum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
 
-                <com.denzcoskun.imageslider.ImageSlider
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:id="@+id/image_slider"
-                    app:iss_period="1000"
-                    app:iss_auto_cycle="true"
-                    app:iss_corner_radius="20"
-                    app:delay="0"
-                    app:hideIndicators="true"
-                    app:iss_title_background="@drawable/gradient"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_recommendations"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
 
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/alatsi"
-                android:text="Рекомендації"
-                android:layout_marginTop="20dp"
-                android:textAlignment="center"
-                android:gravity="center_vertical|center_horizontal"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_recommendations"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:orientation="horizontal">
+        </androidx.recyclerview.widget.RecyclerView>
 
 
+        <TextView
+            android:id="@+id/home_sweets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="Наші солодощі"
+            android:textSize="19sp" />
 
-            </androidx.recyclerview.widget.RecyclerView>
-            <TextView
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/alatsi"
-                android:text="Наша кава"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+        <TextView
+            android:id="@+id/home_sweets_loremIpsum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="120dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_sweets"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
 
-            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
-            <TextView
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/alatsi"
-                android:text="Смачний сир"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+        <TextView
+            android:id="@+id/home_coffee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="Смачна кава"
+            android:textSize="19sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="120dp">
+        <TextView
+            android:id="@+id/home_coffee_loremIpsum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
 
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
-    </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_coffee"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/home_cheese"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="Сири"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/home_coffee_cheese"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_cheese"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/home_pasta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="Паста"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/home_pasta_loremIpsum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_pasta"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/home_meat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="М'ясні продукти"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/home_meat_loremIpsum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_meat"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/home_sauces"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="Соуси"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/home_sauces_loremIpsum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_sauces"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/home_chemistry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:text="Хімія"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/home_chemistry_loremIpsum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/poppins"
+            android:text="Lorem ipsum"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_chemistry"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
 </ScrollView>
 
     <!-- TODO: Update blank fragment layout -->

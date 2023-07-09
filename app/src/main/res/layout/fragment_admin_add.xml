@@ -71,10 +71,10 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/add_seafood"
+            android:id="@+id/add_recommendations"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/seafood" />
+            android:src="@drawable/vec_star" />
         <ImageView
             android:id="@+id/add_sauces"
             android:layout_gravity="right|center"

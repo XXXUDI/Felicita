@@ -34,9 +34,8 @@ import io.paperdb.Paper;
 
 public class HomeFragment extends Fragment {
 
-    private ImageSlider imageSlider;
-
-    private RecyclerView recyclerViewRecommendation;
+    private RecyclerView recyclerViewRecommendation, recyclerViewSweets, recyclerViewCoffee, recyclerViewCheese, recyclerViewMeat,
+            recyclerViewChemistry, recyclerViewSauces, recyclerViewPasta;
 
     private DatabaseReference productsRef;
 
@@ -50,20 +49,6 @@ public class HomeFragment extends Fragment {
 
         initialize(view);
 
-        ArrayList<SlideModel> slideModels = new ArrayList<>();
-
-        slideModels.add(new SlideModel(R.drawable.image1, ScaleTypes.FIT));
-        slideModels.add(new SlideModel(R.drawable.image2, ScaleTypes.FIT));
-        slideModels.add(new SlideModel(R.drawable.image3, ScaleTypes.FIT));
-        slideModels.add(new SlideModel(R.drawable.image4, ScaleTypes.FIT));
-
-        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
-
-
-
-        imageSlider.startSliding(4400);
-
-
         return view;
     }
 
@@ -76,7 +61,6 @@ public class HomeFragment extends Fragment {
         FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
-                String modelImage = model.getImage();
                 holder.txtProductName.setText(model.getPname());
                 holder.txtProductPrice.setText(model.getPrice() + " грн");
                 Picasso.get().load(model.getImage()).into(holder.imageView);
@@ -100,7 +84,6 @@ public class HomeFragment extends Fragment {
         recyclerViewRecommendation.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewRecommendation.setLayoutManager(layoutManager);
-        imageSlider = view.findViewById(R.id.image_slider);
         productsRef = FirebaseDatabase.getInstance().getReference().child("Products");
     }
 

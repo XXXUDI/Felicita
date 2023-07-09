@@ -1,4 +1,4 @@
-package com.socompany.felicitashop;
+package com.socompany.felicitashop.Interfaces;
 
 import android.view.View;
 

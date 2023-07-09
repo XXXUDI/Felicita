@@ -20,7 +20,7 @@ public class AdminAddFragment extends Fragment {
 
     private String category;
     private TextView categoryDisplay;
-    private ImageView sweets, cheese, pasta, coffee, seafood, meat, chemistry, sauces;
+    private ImageView sweets, cheese, pasta, coffee, recommendations, meat, chemistry, sauces;
     private Button addButton;
 
 
@@ -79,10 +79,10 @@ public class AdminAddFragment extends Fragment {
                 displayCategory();
             }
         });
-        seafood.setOnClickListener(new View.OnClickListener() {
+        recommendations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                category = "Морепродукти";
+                category = "Рекомендації";
                 displayCategory();
             }
         });
@@ -121,7 +121,7 @@ public class AdminAddFragment extends Fragment {
         cheese = view.findViewById(R.id.add_cheese);
         pasta = view.findViewById(R.id.add_pasta);
         coffee = view.findViewById(R.id.add_coffee);
-        seafood = view.findViewById(R.id.add_seafood);
+        recommendations = view.findViewById(R.id.add_recommendations);
         meat = view.findViewById(R.id.add_meat);
         chemistry = view.findViewById(R.id.add_chemistry);
         sauces = view.findViewById(R.id.add_sauces);

@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.socompany.felicitashop.ItemClickListener;
+import com.socompany.felicitashop.Interfaces.ItemClickListener;
 import com.socompany.felicitashop.R;
 
 public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
