@@ -1,5 +1,6 @@
 package com.socompany.felicitashop.MainActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
@@ -22,6 +24,14 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.socompany.felicitashop.Adapters.CheeseAdapter;
+import com.socompany.felicitashop.Adapters.ChemistryAdapter;
+import com.socompany.felicitashop.Adapters.CoffeeAdapter;
+import com.socompany.felicitashop.Adapters.MeatAdapter;
+import com.socompany.felicitashop.Adapters.PastaAdapter;
+import com.socompany.felicitashop.Adapters.RecommendationsAdapter;
+import com.socompany.felicitashop.Adapters.SaucesAdapter;
+import com.socompany.felicitashop.Adapters.SweetsAdapter;
 import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.R;
 import com.socompany.felicitashop.ViewHolders.ProductViewHolder;
@@ -39,7 +49,19 @@ public class HomeFragment extends Fragment {
 
     private DatabaseReference productsRef;
 
-    private  RecyclerView.LayoutManager layoutManager;
+    private RecommendationsAdapter recommendationsAdapter;
+    private SweetsAdapter sweetsAdapter;
+    private ChemistryAdapter cheAdapter;
+    private CoffeeAdapter coffeeAdapter;
+    private PastaAdapter pastaAdapter;
+    private CheeseAdapter cheeseAdapter;
+    private MeatAdapter meatAdapter;
+    private SaucesAdapter saucesAdapter;
+
+    private EditText searchPanel;
+
+    private  RecyclerView.LayoutManager layoutManagerRec, layoutManagerSweet, layoutManagerCoffee, layoutManagerCheese, layoutManagerMeat,
+    layoutManagerChemistry, layoutManagerSauces, layoutManagerPasta;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +71,8 @@ public class HomeFragment extends Fragment {
 
         initialize(view);
 
+
+
         return view;
     }
 
@@ -56,36 +80,124 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions<Products> options = new FirebaseRecyclerOptions.Builder<Products>()
-                .setQuery(productsRef, Products.class).build();
-        FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
-                holder.txtProductName.setText(model.getPname());
-                holder.txtProductPrice.setText(model.getPrice() + " грн");
-                Picasso.get().load(model.getImage()).into(holder.imageView);
+        FirebaseRecyclerOptions<Products> recommendationOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("Рекомендації"), Products.class).build();
+        recommendationsAdapter = new RecommendationsAdapter(recommendationOptions);
+        recyclerViewRecommendation.setAdapter(recommendationsAdapter);
+        recommendationsAdapter.startListening();
 
-            }
-            @NonNull
+        FirebaseRecyclerOptions<Products> sweetsOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("Солодощі"), Products.class).build();
+        sweetsAdapter = new SweetsAdapter(sweetsOptions);
+        recyclerViewSweets.setAdapter(sweetsAdapter);
+        sweetsAdapter.startListening();
+
+        FirebaseRecyclerOptions<Products> chemistryOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("Хімія"), Products.class).build();
+        cheAdapter = new ChemistryAdapter(chemistryOptions);
+        recyclerViewChemistry.setAdapter(cheAdapter);
+        cheAdapter.startListening();
+
+        FirebaseRecyclerOptions<Products> coffeeOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("Кава"), Products.class).build();
+        coffeeAdapter = new CoffeeAdapter(coffeeOptions);
+        recyclerViewCoffee.setAdapter(coffeeAdapter);
+        coffeeAdapter.startListening();
+
+        FirebaseRecyclerOptions<Products> pastaOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("Паста"), Products.class).build();
+        pastaAdapter = new PastaAdapter(pastaOptions);
+        recyclerViewPasta.setAdapter(pastaAdapter);
+        pastaAdapter.startListening();
+
+        FirebaseRecyclerOptions<Products> cheeseOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("Сири"), Products.class).build();
+        cheeseAdapter = new CheeseAdapter(cheeseOptions);
+        recyclerViewCheese.setAdapter(cheeseAdapter);
+        cheeseAdapter.startListening();
+
+        FirebaseRecyclerOptions<Products> meatOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("М'ясо"), Products.class).build();
+        meatAdapter = new MeatAdapter(meatOptions);
+        recyclerViewMeat.setAdapter(meatAdapter);
+        meatAdapter.startListening();
+
+        FirebaseRecyclerOptions<Products> saucesOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                .setQuery(productsRef.orderByChild("category").equalTo("Соуси"), Products.class).build();
+        saucesAdapter = new SaucesAdapter(saucesOptions);
+        recyclerViewSauces.setAdapter(saucesAdapter);
+        saucesAdapter.startListening();
+
+        // Цей метод ініціалізує прослуховування на натискання на продукт (onClickListener)
+        setupProductListeners();
+    }
+
+    private void setupProductListeners() {
+        View.OnClickListener productClickListener = new View.OnClickListener() {
             @Override
-            public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_layout, parent, false);
-                ProductViewHolder holder = new ProductViewHolder(view);
-                return holder;
+            public void onClick(View view) {
+
+                String productId = (String) view.getTag();
+
+                Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
+                intent.putExtra("pid", productId);
+                startActivity(intent);
             }
         };
 
-        recyclerViewRecommendation.setAdapter(adapter);
-        adapter.startListening();
+        recommendationsAdapter.setOnItemClickListener(productClickListener);
+        sweetsAdapter.setOnItemClickListener(productClickListener);
+        cheAdapter.setOnItemClickListener(productClickListener);
+        coffeeAdapter.setOnItemClickListener(productClickListener);
+        pastaAdapter.setOnItemClickListener(productClickListener);
+        cheeseAdapter.setOnItemClickListener(productClickListener);
+        meatAdapter.setOnItemClickListener(productClickListener);
+        saucesAdapter.setOnItemClickListener(productClickListener);
     }
 
     private void initialize(View view) {
+        searchPanel = view.findViewById(R.id.home_search_panel);
+
+        layoutManagerRec = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewRecommendation = view.findViewById(R.id.recycler_view_recommendations);
         recyclerViewRecommendation.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewRecommendation.setLayoutManager(layoutManager);
+        recyclerViewRecommendation.setLayoutManager(layoutManagerRec);
+
+        layoutManagerSweet = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewSweets = view.findViewById(R.id.recycler_view_sweets);
+        recyclerViewSweets.setHasFixedSize(true);
+        recyclerViewSweets.setLayoutManager(layoutManagerSweet);
+
+        layoutManagerChemistry = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewChemistry = view.findViewById(R.id.recycler_view_chemistry);
+        recyclerViewChemistry.setLayoutManager(layoutManagerChemistry);
+        recyclerViewChemistry.setHasFixedSize(true);
+
+        layoutManagerCoffee = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewCoffee = view.findViewById(R.id.recycler_view_coffee);
+        recyclerViewCoffee.setHasFixedSize(true);
+        recyclerViewCoffee.setLayoutManager(layoutManagerCoffee);
+
+        layoutManagerPasta = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewPasta = view.findViewById(R.id.recycler_view_pasta);
+        recyclerViewPasta.setHasFixedSize(true);
+        recyclerViewPasta.setLayoutManager(layoutManagerPasta);
+
+        layoutManagerCheese = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewCheese = view.findViewById(R.id.recycler_view_cheese);
+        recyclerViewCheese.setHasFixedSize(true);
+        recyclerViewCheese.setLayoutManager(layoutManagerCheese);
+
+        layoutManagerMeat = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewMeat = view.findViewById(R.id.recycler_view_meat);
+        recyclerViewMeat.setHasFixedSize(true);
+        recyclerViewMeat.setLayoutManager(layoutManagerMeat);
+
+        layoutManagerSauces = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewSauces = view.findViewById(R.id.recycler_view_sauces);
+        recyclerViewSauces.setHasFixedSize(true);
+        recyclerViewSauces.setLayoutManager(layoutManagerSauces);
+
         productsRef = FirebaseDatabase.getInstance().getReference().child("Products");
     }
-
-
 }

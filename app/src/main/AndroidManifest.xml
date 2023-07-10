@@ -16,6 +16,9 @@
         android:theme="@style/Theme.FelicitaShop"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivities.ProductDatailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivities.Admin.AddProductActivity"
             android:exported="false" />
         <activity
