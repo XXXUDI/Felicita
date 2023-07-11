@@ -43,6 +43,7 @@
             android:layout_marginTop="20dp"
             android:text="2. Введіть назву товару" />
         <EditText
+            android:textColor="@color/black"
             android:id="@+id/add2_pName"
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -60,6 +61,7 @@
             android:layout_marginTop="20dp"
             android:text="3. Опишіть цей товар" />
         <EditText
+            android:textColor="@color/black"
             android:id="@+id/add2_pDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,6 +78,7 @@
             android:layout_marginTop="20dp"
             android:text="3. Вкажіть ціну в гривнях" />
         <EditText
+            android:textColor="@color/black"
             android:id="@+id/add2_pPrice"
             android:layout_width="match_parent"
             android:layout_height="55dp"

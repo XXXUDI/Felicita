@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.socompany.felicitashop.Adapters.CheeseAdapter;
 import com.socompany.felicitashop.Adapters.ChemistryAdapter;
 import com.socompany.felicitashop.Adapters.CoffeeAdapter;
@@ -58,7 +61,9 @@ public class HomeFragment extends Fragment {
     private MeatAdapter meatAdapter;
     private SaucesAdapter saucesAdapter;
 
+    // This is editText where customs can search the products by typing the name of product
     private EditText searchPanel;
+    private TextView recommendationsText, recommendationsLoremIpsum;
 
     private  RecyclerView.LayoutManager layoutManagerRec, layoutManagerSweet, layoutManagerCoffee, layoutManagerCheese, layoutManagerMeat,
     layoutManagerChemistry, layoutManagerSauces, layoutManagerPasta;
@@ -71,7 +76,7 @@ public class HomeFragment extends Fragment {
 
         initialize(view);
 
-
+        Paper.init(getContext());
 
         return view;
     }
@@ -80,6 +85,8 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+
+        //adapter to sort products to their category
         FirebaseRecyclerOptions<Products> recommendationOptions = new FirebaseRecyclerOptions.Builder<Products>()
                 .setQuery(productsRef.orderByChild("category").equalTo("Рекомендації"), Products.class).build();
         recommendationsAdapter = new RecommendationsAdapter(recommendationOptions);
@@ -130,7 +137,66 @@ public class HomeFragment extends Fragment {
 
         // Цей метод ініціалізує прослуховування на натискання на продукт (onClickListener)
         setupProductListeners();
+
+        searchPanelWathcer();
+
     }
+
+    private void searchPanelWathcer() {
+        searchPanel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Получаем текст из EditText
+                String searchText = s.toString();
+
+                if(searchText.trim().length() != 0) {
+                    recommendationsText.setText("Результати пошуку");
+                    recommendationsLoremIpsum.setText("Результат пошуку по запросу: " + searchText);
+
+                    //TODO можна добавити перевірку з нижнім регістром,
+                    // і поміняти систему пошуку
+                    String searchTextLower = searchText.toLowerCase();
+
+
+                    hideAllUnwantedViews();
+
+                    Query query = productsRef.orderByChild("pname").startAt(searchText).endAt(searchText + "\uf8ff");
+
+                    // Создаем новый объект FirebaseRecyclerOptions с обновленным запросом
+                    FirebaseRecyclerOptions<Products> options = new FirebaseRecyclerOptions.Builder<Products>()
+                            .setQuery(query, Products.class)
+                            .build();
+
+                    // Обновляем адаптер с новыми данными
+                    recommendationsAdapter.updateOptions(options);
+
+                    // Уведомляем адаптер об изменениях
+                    recommendationsAdapter.notifyDataSetChanged();
+                } else {
+                    FirebaseRecyclerOptions<Products> recommendationOptions = new FirebaseRecyclerOptions.Builder<Products>()
+                            .setQuery(productsRef.orderByChild("category").equalTo("Рекомендації"), Products.class).build();
+                    recommendationsAdapter.updateOptions(recommendationOptions);
+                    recommendationsAdapter.notifyDataSetChanged();
+
+                    recommendationsText.setText("Рекомендації");
+                    recommendationsLoremIpsum.setText("Lorem Ipsum");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void hideAllUnwantedViews() {
+
+    }
+
 
     private void setupProductListeners() {
         View.OnClickListener productClickListener = new View.OnClickListener() {
@@ -156,6 +222,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void initialize(View view) {
+        recommendationsText = view.findViewById(R.id.home_recommendations);
+        recommendationsLoremIpsum = view.findViewById(R.id.home_recommendations_loremIpsum);
+
         searchPanel = view.findViewById(R.id.home_search_panel);
 
         layoutManagerRec = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);

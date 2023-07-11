@@ -142,7 +142,7 @@
                     android:layout_gravity="right|center"
                     android:padding="8dp"
                     android:textColor="#01C2FF"
-                    android:textSize="18sp"/>
+                    android:textSize="14sp"/>
 
             </FrameLayout>
 

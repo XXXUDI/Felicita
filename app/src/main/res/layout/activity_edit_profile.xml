@@ -17,113 +17,115 @@
             android:id="@+id/edit_profile_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
             android:src="@drawable/baseline_arrow_back_25"
-            android:padding="5dp"
+            android:padding="10dp"
             android:layout_marginLeft="10dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Мій профіль"
-            android:textSize="18sp"
+
+            android:textSize="30sp"
             android:textStyle="bold"
             android:layout_gravity="center"
             />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ваше ім'я"
-            android:layout_marginLeft="30dp"
-            android:layout_gravity="top"
-            android:textSize="16dp"
-            />
-        <EditText
-            android:backgroundTint="@color/black"
-            android:hint="Name"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center|top"
-
-            />
-    </FrameLayout>
-    <FrameLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Номер телефону"
-            android:layout_gravity="center|top"
-            android:textSize="16dp"
-            />
-        <EditText
-            android:hint="   Phone number (0931234567)"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center|top"
-            android:background="@drawable/settings_edit_text"
-            />
-    </FrameLayout>
-    <!-- TODO: Update blank fragment layout -->
-    <FrameLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Електрона пошта"
-            android:layout_gravity="center|top"
-            android:textSize="16dp"
-            />
-        <EditText
-            android:hint="   Email (example@gmail.com)"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center|top"
-            android:background="@drawable/settings_edit_text"
-            />
-    </FrameLayout>
-    <Button
-        android:layout_width="200dp"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:id="@+id/settings_changeProfile"
-        android:textSize="18sp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#495BAD"
-        android:text="Зберегти зміни"
-        app:cornerRadius = "20dp"
-        />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/wave123"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical"
-        android:gravity="center">
-        <Button
-            android:text="  Видалити аккаунт"
-            android:layout_width="220dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="bottom"
-            android:layout_marginTop="200dp"
-            android:backgroundTint="#AB2940"
-            app:cornerRadius = "20dp"
-            />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/poppins"
+            android:text="Ваше ім'я"
+            android:textAlignment="center"
+            android:textColor="#505050"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Ваше ім'я"
+            android:textColor="#121212"
+            android:fontFamily="@font/poppins"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/poppins"
+            android:text="Номер телефону"
+            android:textAlignment="center"
+            android:textColor="#505050"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_profile_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="093 123 45 67"
+            android:inputType="number"
+            android:textColor="#121212"
+            android:fontFamily="@font/poppins" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/poppins"
+            android:text="Електронна пошта"
+            android:textAlignment="center"
+            android:textColor="#505050"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_profile_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="093 123 45 67"
+            android:textColor="#121212"
+            android:fontFamily="@font/poppins" />
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_profile_editButton"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#8692F7"
+            android:text="Змінити профіль"
+            app:cornerRadius = "20dp" />
+        <FrameLayout
+            android:background="@drawable/editrectangle"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:elevation="15dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_profile_deleteButton"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/black"
+                android:text="Видалити аккаунт"
+                app:cornerRadius = "20dp" />
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>

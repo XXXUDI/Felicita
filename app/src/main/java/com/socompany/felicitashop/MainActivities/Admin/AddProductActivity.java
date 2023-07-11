@@ -8,8 +8,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,8 +30,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.socompany.felicitashop.R;
+import com.soundcloud.android.crop.Crop;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -36,7 +43,7 @@ import java.util.List;
 public class AddProductActivity extends AppCompatActivity {
     private String category;
 
-    private Uri imageUri;
+    private Uri imageUri, newImageUri;
     private ImageView productImage;
     private EditText productName, productDescription, productPrice;
     private StorageReference productImageRef;
@@ -44,6 +51,8 @@ public class AddProductActivity extends AppCompatActivity {
     private DatabaseReference productRef;
     private String productRandomKey, saveCurrentData, saveCurrentTime;
     private String downloadedImageUrl;
+
+    private boolean isCropAvailable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +71,8 @@ public class AddProductActivity extends AppCompatActivity {
                 if (isCropAppAvailable()) {
                     CropImage.activity().start(AddProductActivity.this);
                 } else {
-                    CropImage.startPickImageActivity(AddProductActivity.this);
+                    isCropAvailable = false;
+                    Crop.pickImage(AddProductActivity.this);
                 }
             }
         });
@@ -101,9 +111,11 @@ public class AddProductActivity extends AppCompatActivity {
 
         productRandomKey = saveCurrentData + saveCurrentTime;
 
-        StorageReference filePath = productImageRef.child(imageUri.getLastPathSegment() + productRandomKey + ".jpg"); // Can change to webm
+        Uri imageToUpload = fixImageSize(imageUri);
 
-        final UploadTask uploadTask = filePath.putFile(imageUri);
+        StorageReference filePath = productImageRef.child(imageToUpload.getLastPathSegment() + productRandomKey + ".WebM"); // Can change to webm
+
+        final UploadTask uploadTask = filePath.putFile(imageToUpload);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -129,6 +141,43 @@ public class AddProductActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private Uri fixImageSize(Uri imageUri) {
+        try {
+            // Получаем путь к файлу изображения
+            String imagePath = getRealPathFromURI(imageUri);
+            // Получаем размер файла в килобайтах
+            long imageSize = new File(imagePath).length() / 1024;
+            // Проверяем, превышает ли размер файла 300 КБ
+            if (imageSize > 300) {
+                // Создаем новый файл для сжатого изображения
+                File compressedImageFile = new File(getCacheDir(), "compressed.jpg");
+                // Сжимаем изображение и сохраняем его в новый файл
+                Bitmap compressedBitmap = BitmapFactory.decodeFile(imagePath);
+                FileOutputStream out = new FileOutputStream(compressedImageFile);
+                compressedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                out.close();
+                // Возвращаем новый Uri для сжатого изображения
+                return Uri.fromFile(compressedImageFile);
+            } else {
+                // Если размер файла не превышает 300 КБ, возвращаем исходный Uri
+                return imageUri;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return imageUri;
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
 
     private void SaveProductInfoToDatabase(String name, String category, String description, String price) {
@@ -181,15 +230,39 @@ public class AddProductActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        CropImage.ActivityResult result = CropImage.getActivityResult(data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                imageUri = result.getUri();
-                productImage.setImageURI(imageUri);
+        if(isCropAvailable) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                    imageUri = result.getUri();
+                    productImage.setImageURI(imageUri);
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Toast.makeText(AddProductActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-            Exception error = result.getError();
-            Toast.makeText(AddProductActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+        } else {
+            if(resultCode == RESULT_OK){
+                if(requestCode == Crop.REQUEST_PICK) {
+                    newImageUri = data.getData();
+                    Uri destination_uri = Uri.fromFile(new File(getCacheDir(), "cropped"));
+                    Crop.of(newImageUri, destination_uri).asSquare().start(AddProductActivity.this);
+                    imageUri = Crop.getOutput(data);
+                    productImage.setImageURI(imageUri);
+                } else if(requestCode == Crop.REQUEST_CROP){
+                    handleCrop(resultCode, data);
+                }
+            }
+        }
+    }
+
+    private void handleCrop(int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+            imageUri = Crop.getOutput(data);
+            productImage.setImageURI(imageUri);
+        } else if(resultCode == Crop.RESULT_ERROR) {
+            String error  = Crop.getError(data).toString();
+            Toast.makeText(AddProductActivity.this, error, Toast.LENGTH_SHORT).show();
         }
     }
 

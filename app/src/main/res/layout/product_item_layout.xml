@@ -31,32 +31,37 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_below="@id/item_layout_sale"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/baseline_broken_image_24"
             android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/product_price"
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="17dp"
             android:layout_below="@+id/product_image"
             android:layout_marginTop="-5dp"
             android:fontFamily="@font/poppins"
             android:text="Product Price"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/product_name"
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="18dp"
             android:layout_below="@+id/product_price"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="0dp"
             android:fontFamily="@font/poppins"
             android:text="Product name"
             android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="8dp" />
+            android:textColor="#505050"
+            android:textSize="12dp" />
 
     </RelativeLayout>
 
