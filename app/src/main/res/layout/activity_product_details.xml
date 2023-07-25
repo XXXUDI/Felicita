@@ -6,63 +6,90 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EBEBEB"
     tools:context=".MainActivities.ProductDetailsActivity">
 
     <FrameLayout
-        android:background="@color/purple"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
-        <ImageView
-            android:id="@+id/pd_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center|left"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/baseline_arrow_back_24"/>
-
-        <TextView
-            android:id="@+id/pd_product_name"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/poppins"
-            android:text="Product Name"
-            android:textColor="@color/white"
-            android:textSize="22dp" />
-    </FrameLayout>
-
-    <ScrollView
-        android:background="#F2F2F2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        android:layout_height="300dp">
+        <FrameLayout
+            android:background="@color/material_dynamic_neutral50"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <FrameLayout
-                android:layout_marginTop="20dp"
+            android:layout_height="280dp">
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <ImageView
-                    android:id="@+id/pd_product_image"
-                    android:layout_marginLeft="15dp"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/baseline_image_24"/>
+                    android:id="@+id/details_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/blue"/>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/details_backButton"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
 
-                <TextView
-                    android:id="@+id/pd_product_description"
-                    android:fontFamily="@font/poppins"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="55dp"
-                    android:text="Product Description"
-                    android:textColor="@color/black"
-                    />
-            </FrameLayout>
-        </LinearLayout>
-    </ScrollView>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/purple"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/baseline_arrow_back_24"
+                android:padding="4dp"/>
+        </FrameLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:id="@+id/details_pprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="160 грн"
+                android:textSize="18dp"
+
+                android:layout_gravity="center"/>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/details_pname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins"
+        android:text="Name of Product"
+        android:textColor="#242424"
+        android:textSize="23sp" />
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:textColor="#787878"
+        android:id="@+id/details_pdescription"
+        android:text="Simple product description :"
+        android:layout_marginLeft="10dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins" />
+    <Button
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:id="@+id/details_addButton"
+        android:textSize="18sp"
+        android:layout_marginTop="120dp"
+        android:backgroundTint="@color/purple"
+        android:text="Додати до кошика"
+        app:cornerRadius = "20dp"
+        android:layout_gravity="center"
+        />
 </LinearLayout>

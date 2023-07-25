@@ -1,5 +1,7 @@
 package com.socompany.felicitashop.MainActivities;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +16,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,17 +45,23 @@ import com.socompany.felicitashop.MainActivities.Admin.AdminMainActivity;
 import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.R;
 import com.socompany.felicitashop.Tools.Parser;
+import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentFactory;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 
 public class SettingsFragment extends Fragment {
 
+    private static final int REQUEST_CODE = 1;
     private CircleImageView userImage;
 
     private ImageView adminPanelLink;
@@ -63,6 +73,9 @@ public class SettingsFragment extends Fragment {
     private Uri imageUri, newImageUri;
     private StorageReference storageProfilePictureRef;
     private StorageTask uploadTask;
+
+    private boolean isCropAvailable = true;
+    private Fragment fragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,8 +92,10 @@ public class SettingsFragment extends Fragment {
                 if(isCropAppAvailable()) {
                     CropImage.activity().start(getContext(), SettingsFragment.this);
                 } else {
-                    Toast.makeText(getActivity(), "Помилка: no apps can perform this action", Toast.LENGTH_SHORT).show();
+                    isCropAvailable = false;
+                    pickImageFromGallery();
                 }
+
             }
         });
         changeProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -101,25 +116,43 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-    private boolean isUserAdmin(String read) {
+    private boolean isUserAdmin(String phone) {
         //TODO you know what should be there
+
+
         return true;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        CropImage.ActivityResult result = CropImage.getActivityResult(data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (isCropAvailable) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK && requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 imageUri = result.getUri();
                 userImage.setImageURI(imageUri);
                 uploadImage(imageUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
             }
-        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-            Exception error = result.getError();
-            Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+        } else {
+            if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+                if (data != null) {
+                    Uri newImageUri = data.getData();
+                    Uri destination_uri = Uri.fromFile(new File(getActivity().getCacheDir(), "cropped"));
+                    Crop.of(newImageUri, destination_uri).asSquare().start(getActivity());
+                    imageUri = Crop.getOutput(data);
+                    userImage.setImageURI(imageUri);
+                    uploadImage(imageUri);
+                }
+            }
         }
+    }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     private boolean isCropAppAvailable() {

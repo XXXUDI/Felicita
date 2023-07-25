@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.R;
+import com.socompany.felicitashop.model.Users;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -37,6 +38,8 @@ public class SignUp2Page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up2_page);
+
+        Paper.init(this);
 
         initialize();
 

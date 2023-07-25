@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -24,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.socompany.felicitashop.Auth.LoginActivity;
 import com.socompany.felicitashop.Prevalent.Prevalent;
+import com.socompany.felicitashop.Prevalent.UserBasket;
 import com.socompany.felicitashop.R;
+import com.socompany.felicitashop.Tools.AppPreferences;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,6 +62,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         displayUserData();
 
+        UserBasket.userBasket = AppPreferences.loadUserBasket(MainActivity.this);
+
+        if(UserBasket.userBasket.isEmpty()) {
+            Log.e("Empty map", "aisjdjsdakjsd;kjaskdja;lsjd;ajs;dla");
+        }
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,

@@ -12,7 +12,7 @@ import com.socompany.felicitashop.R;
 
 public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView txtProductName, txtProductDescription, txtProductPrice;
+    public TextView txtProductName, txtProductPrice;
     public ImageView imageView;
     public ItemClickListener listener;
 

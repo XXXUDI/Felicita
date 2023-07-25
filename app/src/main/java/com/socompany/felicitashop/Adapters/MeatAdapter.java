@@ -1,10 +1,9 @@
 package com.socompany.felicitashop.Adapters;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -13,12 +12,13 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.socompany.felicitashop.R;
 import com.socompany.felicitashop.ViewHolders.ProductViewHolder;
 import com.socompany.felicitashop.model.Products;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 public class MeatAdapter extends FirebaseRecyclerAdapter<Products, ProductViewHolder> {
 
     private View.OnClickListener onItemClickListener;
+    private int RecursionCounter;
 
     public MeatAdapter(@NonNull FirebaseRecyclerOptions<Products> options) {
         super(options);
@@ -28,27 +28,8 @@ public class MeatAdapter extends FirebaseRecyclerAdapter<Products, ProductViewHo
     protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
         holder.txtProductName.setText(model.getPname());
         holder.txtProductPrice.setText(model.getPrice() + " ₴");
-        Picasso.get().load(model.getImage()).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                holder.imageView.setImageBitmap(bitmap);
-            }
+        loadProductImage(model.getImage(), holder.imageView);
 
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                Drawable image1 = holder.imageView.getDrawable();
-                Picasso.get().load(model.getImage()).into(holder.imageView);
-                Drawable image2 = holder.imageView.getDrawable();
-                if(image1 == image2) {
-                    holder.imageView.setImageResource(R.drawable.baseline_broken_image_24);
-                }
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        });
 
         // Тег для додаткової інформації про продукт. (Використовується в HomeFragment -> SetupProductListeners();).
         holder.itemView.setTag(model.getPid());
@@ -64,5 +45,21 @@ public class MeatAdapter extends FirebaseRecyclerAdapter<Products, ProductViewHo
     }
     public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+    private void loadProductImage(String imageUrl, final ImageView imageView) {
+        Picasso.get().load(imageUrl).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(RecursionCounter != 10) {
+                    RecursionCounter++;
+                    loadProductImage(imageUrl, imageView);
+                }
+            }
+        });
     }
 }
