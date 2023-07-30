@@ -31,6 +31,7 @@ import com.socompany.felicitashop.Prevalent.UserBasket;
 import com.socompany.felicitashop.R;
 import com.socompany.felicitashop.Tools.AppPreferences;
 import com.socompany.felicitashop.model.Product;
+import com.socompany.felicitashop.model.Products;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,8 +48,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView productName, productDescription, productPrice;
     private FrameLayout backButton;
 
-    private Button buttonchuk;
-    private UserBasket currentBasket;
+    private Button addToBasketButton;
 
 
     @Override
@@ -76,7 +76,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             displayProductInfo();
         }
 
-        buttonchuk.setOnClickListener(new View.OnClickListener() {
+        addToBasketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addProductToBasket(productId, userPhone);
@@ -86,12 +86,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void addProductToBasket(String productId, String userPhone) {
-
-
-
         if (userPhone != null) {
             DatabaseReference userBasketRef = FirebaseDatabase.getInstance().getReference()
                     .child("UserBasket").child(userPhone);
+
+            // Для початку, вносимо id Продукта в БД Firebase.
+            HashMap<String, Object> productIdMap = new HashMap<>();
+            productIdMap.put(productId, productId);
+            userBasketRef.updateChildren(productIdMap);
 
             userBasketRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -99,40 +101,56 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     // Очищаем текущую мапу, чтобы избежать дублирования данных
                     if(UserBasket.userBasket != null) {
                         UserBasket.userBasket.clear();
+                    } else if (UserBasket.getUserBasket().size() >= 16) {
+                        Toast.makeText(ProductDetailsActivity.this, "У вашій коризні надто багато продуктів!", Toast.LENGTH_SHORT)
+                                .show();
                     } else {
+                        // Якщо мапа пуста, створюємо нову
                         UserBasket.userBasket = new HashMap<>();
                     }
 
-                    // Проходимся по всем идентификаторам продуктов в корзине пользователя
-                    for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-                        String productId = productSnapshot.getValue(String.class);
 
-                        // Загружаем данные о продукте из узла "Products"
-                        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference()
-                                .child("Products").child(productId);
-
-                        productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                // Получаем данные продукта и преобразуем их в объект Product
-                                Product product = dataSnapshot.getValue(Product.class);
-
-                                // Добавляем продукт в мапу userBasket
-                                if (product != null) {
-                                    UserBasket.userBasket.put(productId, product);
-                                }
-
-                                Toast.makeText(ProductDetailsActivity.this, "Товар додано у корзину!", Toast.LENGTH_SHORT).show();
-
-                                AppPreferences.saveUserBasket(ProductDetailsActivity.this, UserBasket.userBasket);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                // Обработка ошибок, если чтение данных не удалось
-                            }
-                        });
+                    if(dataSnapshot.exists()) {
+                        // Якщо данні існують в базі данних обновляємо мапу і додаємо новий продукт
+                        loadNewUserBasket(dataSnapshot);
                     }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Обработка ошибок, если чтение данных не удалось
+                }
+            });
+        }
+    }
+
+    public void loadNewUserBasket(DataSnapshot dataSnapshot) {
+        // Проходимся по всем идентификаторам продуктов в корзине пользователя
+        for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+            String productId = productSnapshot.getValue(String.class);
+
+            // Загружаем данные о продукте из узла "Products"
+            DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Products").child(productId);
+
+            productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // Получаем данные продукта и преобразуем их в объект Product
+                    Products product = dataSnapshot.getValue(Products.class);
+
+                    // Перевірка чи правильно получили данні продукту
+                    if(product != null && product.getPname().length() >= 1) {
+                        // Добавляем продукт в мапу userBasket
+                        UserBasket.userBasket.put(productId, product);
+                    } else{
+                        // Якщо данні не вдалось получити з dataSnapshot.getValue(Products.class);
+                        Toast.makeText(ProductDetailsActivity.this, "Помилка, повторіть пізніше.", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(ProductDetailsActivity.this, "Товар додано у корзину!", Toast.LENGTH_SHORT).show();
+
+                    // Зберігаємо данні кошику у вигляді мапи локально на пристрої
+                    AppPreferences.saveUserBasket(ProductDetailsActivity.this, UserBasket.userBasket);
                 }
 
                 @Override
@@ -149,11 +167,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
+                    // Получаємо данні з БД
                     String image = snapshot.child("image").getValue().toString();
                     String name = snapshot.child("pname").getValue().toString();
                     String description = snapshot.child("description").getValue().toString();
                     String price = snapshot.child("price").getValue().toString();
 
+                    // Відображаємо данні на екрані
                     Picasso.get().load(image).into(productImage);
                     productName.setText(name);
                     productDescription.setText(description);
@@ -169,11 +189,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        // Ініціалізація змінних
         productImage = findViewById(R.id.details_image);
         productName = findViewById(R.id.details_pname);
         productDescription = findViewById(R.id.details_pdescription);
         productPrice = findViewById(R.id.details_pprice);
-        buttonchuk = findViewById(R.id.details_addButton);
+        addToBasketButton = findViewById(R.id.details_addButton);
     }
 
     @Override

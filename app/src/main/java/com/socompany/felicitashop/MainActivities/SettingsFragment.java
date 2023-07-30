@@ -58,6 +58,7 @@ import androidx.fragment.app.FragmentFactory;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+import org.jetbrains.annotations.NotNull;
 
 public class SettingsFragment extends Fragment {
 
@@ -110,6 +111,8 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 if(isUserAdmin((String) Paper.book().read(Prevalent.userPhoneKey))) {
                     startActivity(new Intent(getActivity(), AdminMainActivity.class));
+                } else {
+                    Toast.makeText(getActivity(), "Ви знайшли секретну кнопку!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -117,10 +120,26 @@ public class SettingsFragment extends Fragment {
     }
 
     private boolean isUserAdmin(String phone) {
-        //TODO you know what should be there
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        final boolean[] mark = {false};
+        reference.child("Users").child(phone).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    if(snapshot.child("IsAdmin").exists()) {
+                        String isAdmin = snapshot.child("IsAdmin").getValue(String.class);
+                        if(isAdmin.equals("true")) {
+                            mark[0] = true;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-
-        return true;
+            }
+        });
+        return mark[0];
     }
 
     @Override

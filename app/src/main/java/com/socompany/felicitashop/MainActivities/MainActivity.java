@@ -28,10 +28,13 @@ import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.Prevalent.UserBasket;
 import com.socompany.felicitashop.R;
 import com.socompany.felicitashop.Tools.AppPreferences;
+import com.socompany.felicitashop.model.Products;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -62,11 +65,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         displayUserData();
 
-        UserBasket.userBasket = AppPreferences.loadUserBasket(MainActivity.this);
-
-        if(UserBasket.userBasket.isEmpty()) {
-            Log.e("Empty map", "aisjdjsdakjsd;kjaskdja;lsjd;ajs;dla");
+        HashMap<String, Products> productsMap = AppPreferences.loadUserBasket(this);
+        if(productsMap != null) {
+            // Якщо мапа пуста (Має меньше 1 продукта), ініціалзуємо нову
+            if(productsMap.size() < 1){
+                UserBasket.userBasket = new HashMap<>();
+            } else {
+                // Якщо мапа не пуста, то загружаємо її в UserBasket
+                UserBasket.setUserBasket(productsMap);
+            }
+        } else {
+            // Якщо мапа пуста (Має меньше 1 продукта), ініціалзуємо нову
+            UserBasket.userBasket = new HashMap<>();
         }
+
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,

@@ -3,6 +3,7 @@ package com.socompany.felicitashop.MainActivities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,13 +19,14 @@ import com.socompany.felicitashop.model.Product;
 
 import java.util.HashMap;
 
+import com.socompany.felicitashop.model.Products;
 import io.paperdb.Paper;
 
 public class BasketFragment extends Fragment {
     private BasketAdapter basketAdapter;
     private RecyclerView recyclerView;
 
-    private HashMap<String, Product> userBasket;
+    private HashMap<String, Products> userBasket;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,20 +35,18 @@ public class BasketFragment extends Fragment {
 
         Paper.init(getContext());
 
-        initialize(view);
+        initializeBasket(view);
 
         return view;
     }
 
-    private void initialize(View view) {
-        if (UserBasket.userBasket != null && !UserBasket.userBasket.isEmpty()) {
-            userBasket = UserBasket.userBasket;
-        } else {
-            // Если данных нет или они некорректны, сделайте действие по умолчанию,
-            // например, перенаправьте пользователя на другой экран или отобразите сообщение об отсутствии данных
-            // Ниже пример перенаправления на EditProfileActivity
-            startActivity(new Intent(getActivity(), EditProfileActivity.class));
+    private void initializeBasket(View view) {
+        if(UserBasket.getUserBasket().isEmpty() && UserBasket.getUserBasket().size() >= 1) {
+            // Если данных нету, вывожу сообщение о том что их нету.
+            Toast.makeText(getActivity(), "Basket is empty", Toast.LENGTH_SHORT).show();
             return; // Выходим из метода, чтобы не продолжать работу с пустым userBasket
+        } else {
+            userBasket = UserBasket.userBasket;
         }
 
         recyclerView = view.findViewById(R.id.basket_review);
