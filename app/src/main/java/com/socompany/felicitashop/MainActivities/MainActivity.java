@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
         } else if(item.getItemId() == R.id.nav_logout) {
             Paper.book().destroy();
+            AppPreferences.deleteUserBasket(this);
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
         drawerLayout.closeDrawer(GravityCompat.START);

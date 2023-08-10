@@ -41,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.socompany.felicitashop.Interfaces.AdminCheckCallback;
 import com.socompany.felicitashop.MainActivities.Admin.AdminMainActivity;
 import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.R;
@@ -109,38 +110,45 @@ public class SettingsFragment extends Fragment {
         adminPanelLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isUserAdmin((String) Paper.book().read(Prevalent.userPhoneKey))) {
-                    startActivity(new Intent(getActivity(), AdminMainActivity.class));
-                } else {
-                    Toast.makeText(getActivity(), "Ви знайшли секретну кнопку!", Toast.LENGTH_SHORT).show();
-                }
+                checkIfUserIsAdmin(new AdminCheckCallback() {
+                    @Override
+                    public void onAdminChecked(boolean isAdmin) {
+
+                        if (isAdmin) {
+                            // Пользователь - админ
+                            startActivity(new Intent(getActivity(), AdminMainActivity.class));
+                        } else {
+                            // Пользователь не админ
+                            Toast.makeText(getActivity(), "Ви знайшли секретну кнопку!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
         return view;
     }
 
-    private boolean isUserAdmin(String phone) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        final boolean[] mark = {false};
-        reference.child("Users").child(phone).addValueEventListener(new ValueEventListener() {
+    private void checkIfUserIsAdmin(AdminCheckCallback callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(Paper.book().read(Prevalent.userPhoneKey));
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                    if(snapshot.child("IsAdmin").exists()) {
-                        String isAdmin = snapshot.child("IsAdmin").getValue(String.class);
-                        if(isAdmin.equals("true")) {
-                            mark[0] = true;
-                        }
-                    }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean isAdmin = false;
+                if (snapshot.exists()) {
+                    String booleanAdmin = snapshot.child("IsAdmin").getValue(String.class);
+                    isAdmin = "true".equals(booleanAdmin);
                 }
+                callback.onAdminChecked(isAdmin);
             }
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onAdminChecked(false);
             }
         });
-        return mark[0];
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

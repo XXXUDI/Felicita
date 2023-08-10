@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center|top"
-    android:background="#F2F2F2"
-    tools:context=".MainActivities.BasketFragment">
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|top"
+        android:background="#F2F2F2"
+        tools:context=".MainActivities.BasketFragment" xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- TODO: Update blank fragment layout -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="15dp">
         <ImageView
-            android:layout_marginRight="80dp"
+            android:layout_marginEnd="80dp"
             android:padding="8dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -26,18 +26,39 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:textSize="32sp"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:text="Ваш кошик"
             />
     </FrameLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_marginTop="25dp"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-        <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/basket_review"/>
-    </ScrollView>
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_height="550dp">
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_marginTop="25dp"
+                android:layout_height="550dp"
+                android:fillViewport="true">
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/basket_review">
+            </androidx.recyclerview.widget.RecyclerView>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+        <Button
+                android:layout_width="250dp"
+                android:layout_height="55dp"
+                android:id="@+id/basket_order_button"
+                android:textSize="18sp"
+                android:layout_marginTop="-5dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#3F51B5"
+                android:text="Оформити замовлення"
+                app:cornerRadius = "20dp"
+        />
+    </FrameLayout>
 </LinearLayout>

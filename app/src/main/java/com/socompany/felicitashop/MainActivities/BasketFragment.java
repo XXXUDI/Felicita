@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.socompany.felicitashop.Adapters.BasketAdapter;
+import com.socompany.felicitashop.Prevalent.Prevalent;
 import com.socompany.felicitashop.Prevalent.UserBasket;
 import com.socompany.felicitashop.R;
+import com.socompany.felicitashop.Tools.AppPreferences;
 import com.socompany.felicitashop.model.Product;
 
 import java.util.HashMap;
@@ -26,6 +31,8 @@ public class BasketFragment extends Fragment {
     private BasketAdapter basketAdapter;
     private RecyclerView recyclerView;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private HashMap<String, Products> userBasket;
 
     @Override
@@ -36,6 +43,20 @@ public class BasketFragment extends Fragment {
         Paper.init(getContext());
 
         initializeBasket(view);
+
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                AppPreferences.loadUserBasketFromDatabase(getContext(), Paper.book().read(Prevalent.userPhoneKey));
+
+                Toast.makeText(getActivity(), "Данні оновлені, перезагрузіть сторінку", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
